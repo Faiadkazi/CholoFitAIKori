@@ -6,7 +6,6 @@
   <title>Dashboard - CholoFitAI</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
   <style>
-    /* Reset & base */
     body, html {
       margin: 0;
       height: 100%;
@@ -14,18 +13,14 @@
       background: #f9fafb;
       overflow: hidden;
     }
-
-    /* Layout */
     .dashboard-container {
       display: flex;
       height: 100vh;
       overflow: hidden;
     }
-
-    /* Sidebar */
     .sidebar {
       width: 260px;
-      background-color: #111827; /* dark navy */
+      background-color: #111827;
       color: white;
       display: flex;
       flex-direction: column;
@@ -35,12 +30,7 @@
       font-weight: 700;
       font-size: 1.5rem;
       margin-bottom: 2rem;
-      user-select: none;
-      letter-spacing: 0.05em;
-      color: #3b82f6; /* bright blue */
-    }
-    .sidebar nav {
-      flex: 1;
+      color: #3b82f6;
     }
     .sidebar nav a {
       display: block;
@@ -50,24 +40,18 @@
       margin-bottom: 0.5rem;
       font-weight: 600;
       text-decoration: none;
-      transition: background-color 0.3s, color 0.3s;
-      user-select: none;
     }
     .sidebar nav a:hover,
     .sidebar nav a.active {
       background-color: #3b82f6;
       color: white;
     }
-
-    /* Main content */
     .main-content {
       flex: 1;
       display: flex;
       flex-direction: column;
       overflow: hidden;
     }
-
-    /* Topbar */
     .topbar {
       height: 60px;
       background: white;
@@ -77,13 +61,8 @@
       align-items: center;
       padding: 0 1.5rem;
       position: relative;
-      user-select: none;
-      z-index: 20;
     }
-
-    /* Profile Icon */
     .profile {
-      position: relative;
       cursor: pointer;
       display: flex;
       align-items: center;
@@ -95,16 +74,10 @@
       border-radius: 50%;
       object-fit: cover;
       border: 2px solid #3b82f6;
-      user-select: none;
     }
     .profile span {
-      color: #111827;
-      font-weight: 600;
-      user-select: none;
-      display: none; /* hide username on smaller widths */
+      display: none;
     }
-
-    /* Dropdown Menu */
     .dropdown-menu {
       position: absolute;
       top: 60px;
@@ -115,31 +88,25 @@
       width: 180px;
       display: none;
       flex-direction: column;
-      user-select: none;
-      z-index: 30;
     }
     .dropdown-menu.active {
       display: flex;
     }
     .dropdown-menu button,
     .dropdown-menu a {
-      border: none;
-      background: none;
       padding: 0.75rem 1rem;
-      text-align: left;
       font-size: 1rem;
       color: #111827;
       font-weight: 600;
       cursor: pointer;
-      transition: background-color 0.2s ease;
       text-decoration: none;
+      background: none;
+      border: none;
     }
     .dropdown-menu button:hover,
     .dropdown-menu a:hover {
       background-color: #f3f4f6;
     }
-
-    /* Chat container inside dashboard */
     .chat-container {
       flex: 1 1 auto;
       display: flex;
@@ -150,17 +117,16 @@
       background: white;
       box-shadow: 0 5px 15px rgba(0,0,0,0.1);
       overflow: hidden;
-      height: calc(100vh - 90px); /* topbar + margin */
+      height: calc(100vh - 90px);
     }
     .chat-messages {
       flex: 1 1 auto;
       overflow-y: auto;
       padding: 1rem 2rem;
-      background: #e0f2fe; /* subtle blue */
+      background: #e0f2fe;
       display: flex;
       flex-direction: column;
       gap: 1rem;
-      scroll-behavior: smooth;
     }
     .message {
       max-width: 75%;
@@ -168,7 +134,6 @@
       border-radius: 1rem;
       font-size: 1rem;
       line-height: 1.4;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
       white-space: pre-wrap;
       word-wrap: break-word;
     }
@@ -200,9 +165,7 @@
       border: 1px solid #ccc;
       border-radius: 9999px;
       outline: none;
-      transition: border-color 0.3s ease;
       height: 40px;
-      line-height: 1.4;
     }
     .chat-input textarea:focus {
       border-color: #3b82f6;
@@ -216,8 +179,6 @@
       padding: 0.5rem 1.5rem;
       border-radius: 9999px;
       cursor: pointer;
-      transition: background-color 0.3s ease;
-      user-select: none;
     }
     .chat-input button:hover {
       background: #2563eb;
@@ -226,135 +187,121 @@
 </head>
 <body>
 
-  <div class="dashboard-container">
+<div class="dashboard-container">
+  <aside class="sidebar">
+    <h2>CholoFitAI</h2>
+    <nav>
+      <a href="#" class="active">Chat</a>
+      <a href="#">My Goals</a>
+      <a href="#">Workouts</a>
+      <a href="#">Progress</a>
+      <a href="#">Rewards</a>
+      <a href="#">Challenges</a>
+      <a href="#">Settings</a>
+      <a href="#">Language</a>
+    </nav>
+  </aside>
 
-    <!-- Sidebar -->
-    <aside class="sidebar" aria-label="Sidebar navigation">
-      <h2>CholoFitAI</h2>
-      <nav>
-        <a href="#" class="active" aria-current="page">Chat</a>
-        <a href="#">My Goals</a>
-        <a href="#">Workouts</a>
-        <a href="#">Progress</a>
-        <a href="#">Rewards</a>
-        <a href="#">Challenges</a>
+  <section class="main-content">
+    <header class="topbar">
+      <div class="profile" id="profileButton">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png" alt="User profile picture" />
+        <span>User</span>
+      </div>
+      <div class="dropdown-menu" id="profileMenu">
+        <a href="#">Profile</a>
         <a href="#">Settings</a>
-        <a href="#">Language</a>
-      </nav>
-    </aside>
+        <button id="logoutBtn">Log Out</button>
+      </div>
+    </header>
 
-    <!-- Main content -->
-    <section class="main-content">
+    <main class="chat-container">
+      <div class="chat-messages" id="chatMessages">
+        <div class="message bot">Hi! I’m your CholoFitAI coach. How can I help you today?</div>
+      </div>
+      <form class="chat-input" id="chatForm">
+        <textarea id="chatInput" placeholder="Type your message..." rows="1" required></textarea>
+        <button type="submit">Send</button>
+      </form>
+    </main>
+  </section>
+</div>
 
-      <!-- Topbar -->
-      <header class="topbar" role="banner">
-        <div class="profile" tabindex="0" aria-haspopup="true" aria-expanded="false" aria-label="User profile menu" id="profileButton">
-          <img src="https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png" alt="User profile picture" />
-          <span>User</span>
-        </div>
-        <div class="dropdown-menu" role="menu" aria-labelledby="profileButton" id="profileMenu">
-          <a href="#" role="menuitem">Profile</a>
-          <a href="#" role="menuitem">Settings</a>
-          <button id="logoutBtn" role="menuitem">Log Out</button>
-        </div>
-      </header>
+<script>
+  const profileBtn = document.getElementById('profileButton');
+  const profileMenu = document.getElementById('profileMenu');
+  profileBtn.addEventListener('click', () => {
+    const expanded = profileBtn.getAttribute('aria-expanded') === 'true';
+    profileBtn.setAttribute('aria-expanded', String(!expanded));
+    profileMenu.classList.toggle('active');
+  });
+  window.addEventListener('click', e => {
+    if (!profileBtn.contains(e.target) && !profileMenu.contains(e.target)) {
+      profileMenu.classList.remove('active');
+    }
+  });
+  document.getElementById('logoutBtn').addEventListener('click', () => {
+    alert('Logging out...');
+    window.location.href = 'signup.html';
+  });
 
-      <!-- Chat Container -->
-      <main class="chat-container" role="main" aria-label="Chat with AI fitness coach">
-        <div class="chat-messages" id="chatMessages" tabindex="0" aria-live="polite" aria-atomic="false">
-          <div class="message bot">Hi! I’m your CholoFitAI coach. How can I help you today?</div>
-        </div>
+  const chatForm = document.getElementById('chatForm');
+  const chatInput = document.getElementById('chatInput');
+  const chatMessages = document.getElementById('chatMessages');
 
-        <form class="chat-input" id="chatForm" aria-label="Send message form">
-          <textarea
-            id="chatInput"
-            placeholder="Type your message..."
-            rows="1"
-            aria-label="Message input"
-            required
-            autocomplete="off"
-          ></textarea>
-          <button type="submit" aria-label="Send message">Send</button>
-        </form>
-      </main>
-    </section>
+  chatInput.addEventListener('input', () => {
+    chatInput.style.height = 'auto';
+    chatInput.style.height = chatInput.scrollHeight + 'px';
+  });
 
-  </div>
+  chatForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const userMessage = chatInput.value.trim();
+    if (!userMessage) return;
 
-  <script>
-    // Profile menu toggle
-    const profileBtn = document.getElementById('profileButton');
-    const profileMenu = document.getElementById('profileMenu');
+    const userMsgDiv = document.createElement('div');
+    userMsgDiv.classList.add('message', 'user');
+    userMsgDiv.textContent = userMessage;
+    chatMessages.appendChild(userMsgDiv);
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+    chatInput.value = '';
+    chatInput.style.height = '40px';
 
-    profileBtn.addEventListener('click', () => {
-      const expanded = profileBtn.getAttribute('aria-expanded') === 'true';
-      profileBtn.setAttribute('aria-expanded', String(!expanded));
-      profileMenu.classList.toggle('active');
-    });
+    const botMsgDiv = document.createElement('div');
+    botMsgDiv.classList.add('message', 'bot');
+    botMsgDiv.textContent = 'Thinking...';
+    chatMessages.appendChild(botMsgDiv);
+    chatMessages.scrollTop = chatMessages.scrollHeight;
 
-    // Close menu when clicking outside
-    window.addEventListener('click', e => {
-      if (!profileBtn.contains(e.target) && !profileMenu.contains(e.target)) {
-        profileMenu.classList.remove('active');
-        profileBtn.setAttribute('aria-expanded', 'false');
-      }
-    });
+    try {
+      const response = await fetch('https://api.together.xyz/inference', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer 0a7b743dc31dc62f0d2f35e41f1f6b3eb7cfd715f9e5c399ab43884936dc5ba3'
+        },
+        body: JSON.stringify({
+          model: "meta-llama/Llama-3-8b-chat-hf",
+          messages: [
+            { role: "system", content: "You are a helpful fitness assistant." },
+            { role: "user", content: userMessage }
+          ],
+          max_tokens: 250,
+          temperature: 0.7
+        })
+      });
+      const data = await response.json();
+      const botReply = data.choices?.[0]?.message?.content || "Sorry, I couldn't understand that.";
+      botMsgDiv.textContent = botReply;
+    } catch (error) {
+      console.error(error);
+      botMsgDiv.textContent = "Oops! Something went wrong.";
+    }
 
-    // Chat logic (same as previous chat)
-    const chatMessages = document.getElementById('chatMessages');
-    const chatForm = document.getElementById('chatForm');
-    const chatInput = document.getElementById('chatInput');
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+  });
+</script>
 
-    // Auto resize textarea height
-    chatInput.addEventListener('input', () => {
-      chatInput.style.height = 'auto';
-      chatInput.style.height = chatInput.scrollHeight + 'px';
-    });
-
-    chatForm.addEventListener('submit', e => {
-      e.preventDefault();
-
-      const userMessage = chatInput.value.trim();
-      if (!userMessage) return;
-
-      // Add user message
-      const userMsgDiv = document.createElement('div');
-      userMsgDiv.classList.add('message', 'user');
-      userMsgDiv.textContent = userMessage;
-      chatMessages.appendChild(userMsgDiv);
-
-      // Clear input
-      chatInput.value = '';
-      chatInput.style.height = '40px';
-
-      // Scroll to bottom
-      chatMessages.scrollTop = chatMessages.scrollHeight;
-
-      // Simulate bot response (replace with actual API call)
-      setTimeout(() => {
-        const botMsgDiv = document.createElement('div');
-        botMsgDiv.classList.add('message', 'bot');
-        botMsgDiv.textContent = "I'm processing your request. Please wait...";
-        chatMessages.appendChild(botMsgDiv);
-        chatMessages.scrollTop = chatMessages.scrollHeight;
-
-        // Simulate real response after delay
-        setTimeout(() => {
-          botMsgDiv.textContent = "Thanks for your message! I’m here to help you with your fitness goals.";
-          chatMessages.scrollTop = chatMessages.scrollHeight;
-        }, 1500);
-      }, 800);
-    });
-
-    // Log out button click
-    document.getElementById('logoutBtn').addEventListener('click', () => {
-      alert('Logging out...');
-      // Implement your logout logic here
-      // For demo: redirect to login page
-      window.location.href = 'signup.html';
-    });
-  </script>
-
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
