@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Chat with Coach - CholoFitAI</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <style>
+    body, html {
+      height: 100%;
+      margin: 0;
+      background: #f9fafb;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+    nav.navbar {
+      background: white;
+      box-shadow: 0 1px 5px rgba(0,0,0,0.1);
+      z-index: 10;
+    }
+    .chat-container {
+      flex: 1 1 auto;
+      display: flex;
+      flex-direction: column;
+      max-width: 720px;
+      margin: 1rem auto;
+      border-radius: 1rem;
+      background: white;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+      overflow: hidden;
+      height: calc(100vh - 120px); /* navbar + footer space */
+    }
+    .chat-messages {
+      flex: 1 1 auto;
+      overflow-y: auto;
+      padding: 1rem 1.5rem;
+      background: #e0f2fe; /* subtle blue background */
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      scroll-behavior: smooth;
+    }
+    .message {
+      max-width: 75%;
+      padding: 0.75rem 1rem;
+      border-radius: 1rem;
+      font-size: 1rem;
+      line-height: 1.4;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      white-space: pre-wrap;
+      word-wrap: break-word;
+    }
+    .message.user {
+      background: #3b82f6;
+      color: white;
+      align-self: flex-end;
+      border-bottom-right-radius: 0.25rem;
+    }
+    .message.bot {
+      background: #f3f4f6;
+      color: #111827;
+      align-self: flex-start;
+      border-bottom-left-radius: 0.25rem;
+    }
+    .chat-input {
+      border-top: 1px solid #ddd;
+      padding: 1rem;
+      background: white;
+      display: flex;
+      gap: 0.75rem;
+      align-items: center;
+    }
+    .chat-input textarea {
+      flex: 1 1 auto;
+      resize: none;
+      padding: 0.75rem 1rem;
+      font-size: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 9999px;
+      outline: none;
+      transition: border-color 0.3s ease;
+      height: 40px;
+      line-height: 1.4;
+    }
+    .chat-input textarea:focus {
+      border-color: #3b82f6;
+      box-shadow: 0 0 8px rgba(59,130,246,0.4);
+    }
+    .chat-input button {
+      background: #3b82f6;
+      border: none;
+      color: white;
+      font-weight: 600;
+      padding: 0.5rem 1.5rem;
+      border-radius: 9999px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      user-select: none;
+    }
+    .chat-input button:hover {
+      background: #2563eb;
+    }
+    footer {
+      background-color: #1f2937;
+      color: white;
+      text-align: center;
+      padding: 1rem;
+      font-size: 0.9rem;
+      user-select: none;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm">
+    <div class="container">
+      <a class="navbar-brand fw-bold text-primary" href="home.html">CholoFitAI</a>
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#navbarNav"
+        aria-controls="navbarNav"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+        <ul class="navbar-nav">
+          <li class="nav-item"><a class="nav-link" href="home.html">Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="about.html">About</a></li>
+          <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
+          <li class="nav-item">
+            <a class="btn btn-outline-primary rounded-pill px-3 ms-2" href="signup.html">Login / Signup</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Chat Container -->
+  <main class="chat-container" role="main" aria-label="Chat with AI fitness coach">
+    <div class="chat-messages" id="chatMessages" tabindex="0" aria-live="polite" aria-atomic="false">
+      <!-- Chat messages will appear here -->
+      <div class="message bot">Hi! I’m your CholoFitAI coach. How can I help you today?</div>
+    </div>
+
+    <form class="chat-input" id="chatForm" aria-label="Send message form">
+      <textarea
+        id="chatInput"
+        placeholder="Type your message..."
+        rows="1"
+        aria-label="Message input"
+        required
+        autocomplete="off"
+      ></textarea>
+      <button type="submit" aria-label="Send message">Send</button>
+    </form>
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    &copy; <span id="year"></span> CholoFitdAI. All rights reserved.
+  </footer>
+
+  <script>
+    // Set current year
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    const chatMessages = document.getElementById('chatMessages');
+    const chatForm = document.getElementById('chatForm');
+    const chatInput = document.getElementById('chatInput');
+
+    // Auto resize textarea height
+    chatInput.addEventListener('input', () => {
+      chatInput.style.height = 'auto';
+      chatInput.style.height = chatInput.scrollHeight + 'px';
+    });
+
+    chatForm.addEventListener('submit', e => {
+      e.preventDefault();
+
+      const userMessage = chatInput.value.trim();
+      if (!userMessage) return;
+
+      // Add user message
+      const userMsgDiv = document.createElement('div');
+      userMsgDiv.classList.add('message', 'user');
+      userMsgDiv.textContent = userMessage;
+      chatMessages.appendChild(userMsgDiv);
+
+      // Clear input
+      chatInput.value = '';
+      chatInput.style.height = '40px';
+
+      // Scroll to bottom
+      chatMessages.scrollTop = chatMessages.scrollHeight;
+
+      // Simulate bot response (replace with actual API call)
+      setTimeout(() => {
+        const botMsgDiv = document.createElement('div');
+        botMsgDiv.classList.add('message', 'bot');
+        botMsgDiv.textContent = "I'm processing your request. Please wait...";
+        chatMessages.appendChild(botMsgDiv);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+
+        // Simulate a real response after delay
+        setTimeout(() => {
+          botMsgDiv.textContent = "Thanks for your message! I’m here to help you with your fitness goals.";
+          chatMessages.scrollTop = chatMessages.scrollHeight;
+        }, 1500);
+      }, 800);
+    });
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
