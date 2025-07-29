@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Challenges - CholoFitAI</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <style>
+    body {
+      background-color: #f0f9ff;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      color: #0369a1;
+    }
+    .container {
+      max-width: 900px;
+      margin: 4rem auto;
+      background: white;
+      padding: 2.5rem;
+      border-radius: 1rem;
+      box-shadow: 0 8px 25px rgba(3,105,161,0.1);
+    }
+    h2 {
+      color: #0c4a6e;
+    }
+    .btn-group, #durationButtons {
+      margin-top: 1.5rem;
+      margin-bottom: 2rem;
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+    .btn-group button, #durationButtons button {
+      min-width: 130px;
+      font-weight: 600;
+      border-radius: 30px;
+      transition: background-color 0.3s ease;
+    }
+    .btn-group button.active, #durationButtons button.active {
+      background-color: #0284c7;
+      color: white;
+    }
+    .challenge-list {
+      font-size: 1.1rem;
+      min-height: 220px;
+    }
+    .challenge-list li {
+      margin-bottom: 12px;
+      background-color: #bae6fd;
+      padding: 12px 18px;
+      border-radius: 10px;
+      box-shadow: 0 2px 6px rgba(2,132,199,0.25);
+      opacity: 0;
+      transform: translateY(20px);
+      animation-fill-mode: forwards;
+    }
+    @keyframes fadeInUp {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h2 class="text-center mb-3">🏆 Fitness Challenges</h2>
+  <p class="text-center text-muted mb-4">
+    Select your fitness phase and challenge duration to view daily tasks.
+  </p>
+
+  <div class="btn-group" role="group" aria-label="Phase selection buttons">
+    <button type="button" class="btn btn-outline-primary" id="phaseCutting" onclick="selectPhase('cutting')">Cutting Phase</button>
+    <button type="button" class="btn btn-outline-primary" id="phaseBulking" onclick="selectPhase('bulking')">Bulking Phase</button>
+    <button type="button" class="btn btn-outline-primary" id="phaseMaintenance" onclick="selectPhase('maintenance')">Maintenance Phase</button>
+  </div>
+
+  <div id="durationButtons" class="btn-group" style="display:none;" aria-label="Duration selection buttons">
+    <button type="button" class="btn btn-outline-primary" id="duration3" onclick="selectDuration('3')">3-Month Challenge</button>
+    <button type="button" class="btn btn-outline-primary" id="duration6" onclick="selectDuration('6')">6-Month Challenge</button>
+    <button type="button" class="btn btn-outline-primary" id="duration12" onclick="selectDuration('12')">12-Month Challenge</button>
+  </div>
+
+  <div id="challengeContent" class="challenge-list text-center mt-3">
+    <p>Select a fitness phase above to start.</p>
+  </div>
+</div>
+
+<script>
+  // Challenge data per phase and duration
+  const challenges = {
+    cutting: {
+      '3': [
+        "Do 15 minutes of bodyweight exercises daily (push-ups, squats, planks).",
+        "Walk or jog for at least 20 minutes, 4 times a week.",
+        "Drink at least 3 liters of water every day.",
+        "Log your meals and track calories 3 days per week.",
+        "Sleep 7-8 hours each night consistently.",
+        "Practice stretching or yoga for 10 minutes daily.",
+        "Limit sugary drinks and processed snacks."
+      ],
+      '6': [
+        "Perform a strength training routine 4 times a week.",
+        "Complete 30 minutes of moderate cardio 5 days a week.",
+        "Include HIIT sessions 1-2 times weekly.",
+        "Meal prep balanced meals every Sunday.",
+        "Track progress with photos and measurements weekly.",
+        "Practice mindfulness or meditation 3 times a week.",
+        "Aim for 8,000-10,000 steps daily."
+      ],
+      '12': [
+        "Follow a periodized workout plan focusing on fat loss and muscle retention.",
+        "Set monthly fat loss and strength goals.",
+        "Incorporate advanced training methods (supersets, drop sets).",
+        "Maintain balanced nutrition with macro cycling.",
+        "Join a fitness community for support and motivation.",
+        "Challenge yourself monthly with mini-goals (e.g., 5K run).",
+        "Prioritize recovery: quality sleep, foam rolling, rest days."
+      ],
+    },
+    bulking: {
+      '3': [
+        "Eat in a slight calorie surplus (+10-15%) with high protein intake.",
+        "Perform full-body strength training 3-4 times weekly.",
+        "Focus on compound lifts like squats, deadlifts, and bench press.",
+        "Track your weight and adjust calories weekly.",
+        "Include moderate cardio 2 times a week for heart health.",
+        "Sleep 7-8 hours to support muscle recovery.",
+        "Stay hydrated and consume nutrient-dense foods."
+      ],
+      '6': [
+        "Follow a structured hypertrophy program 4-5 days per week.",
+        "Increase calorie surplus moderately (+15-20%) focusing on lean gains.",
+        "Progressively overload in your lifts each week.",
+        "Incorporate accessory lifts for muscle balance.",
+        "Meal prep to meet daily macro targets consistently.",
+        "Monitor body composition monthly and adjust diet accordingly.",
+        "Include mobility work and stretching to prevent injuries."
+      ],
+      '12': [
+        "Cycle bulking phases with planned periods of clean eating and controlled surpluses.",
+        "Advanced training splits with emphasis on progressive overload.",
+        "Track detailed workout logs and nutrition daily.",
+        "Experiment with supplementation as needed.",
+        "Join group workouts or find training partners for motivation.",
+        "Set quarterly strength and size goals.",
+        "Prioritize mental wellness and recovery techniques."
+      ]
+    },
+    maintenance: {
+      everyday: [
+        "Maintain a balanced diet at caloric maintenance.",
+        "Exercise 3-5 times weekly mixing strength, cardio, and flexibility.",
+        "Track your weight weekly and adjust food intake if needed.",
+        "Stay active daily — take walks, stretch, or do light yoga.",
+        "Get 7-9 hours of quality sleep nightly.",
+        "Manage stress through mindfulness or hobbies.",
+        "Stay hydrated and avoid excessive processed foods."
+      ]
+    }
+  };
+
+  let selectedPhase = null;
+  let selectedDuration = null;
+
+  function selectPhase(phase) {
+    selectedPhase = phase;
+    selectedDuration = null;
+
+    // Reset active styles on phase buttons
+    ['phaseCutting', 'phaseBulking', 'phaseMaintenance'].forEach(id => {
+      document.getElementById(id).classList.remove('active');
+    });
+    document.getElementById('phase' + capitalize(phase)).classList.add('active');
+
+    const durationDiv = document.getElementById('durationButtons');
+    if(phase === 'maintenance'){
+      durationDiv.style.display = 'none';
+      showChallengesForMaintenance();
+    } else {
+      durationDiv.style.display = 'flex';
+      // Reset duration buttons
+      ['duration3', 'duration6', 'duration12'].forEach(id => {
+        document.getElementById(id).classList.remove('active');
+      });
+      document.getElementById('challengeContent').innerHTML = '<p>Select a challenge duration above.</p>';
+    }
+  }
+
+  function selectDuration(duration) {
+    if(!selectedPhase) return;
+
+    selectedDuration = duration;
+
+    // Reset active styles on duration buttons
+    ['duration3', 'duration6', 'duration12'].forEach(id => {
+      document.getElementById(id).classList.remove('active');
+    });
+    document.getElementById('duration' + duration).classList.add('active');
+
+    showChallengesForDuration(selectedPhase, selectedDuration);
+  }
+
+  function showChallengesForDuration(phase, duration) {
+    const tasks = challenges[phase][duration];
+    if(!tasks) {
+      document.getElementById('challengeContent').innerHTML = '<p>No challenges found for this selection.</p>';
+      return;
+    }
+    renderTasks(tasks);
+  }
+
+  function showChallengesForMaintenance() {
+    const tasks = challenges['maintenance']['everyday'];
+    renderTasks(tasks);
+  }
+
+  function renderTasks(tasks) {
+    let html = '<ul class="list-unstyled">';
+    tasks.forEach((task, i) => {
+      html += `<li style="animation: fadeInUp 0.5s ease forwards; animation-delay: ${i * 0.15}s">✅ ${task}</li>`;
+    });
+    html += '</ul>';
+    document.getElementById('challengeContent').innerHTML = html;
+  }
+
+  function capitalize(str) {
+    return str.charAt(0).toUpperCase() + str.slice(1);
+  }
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

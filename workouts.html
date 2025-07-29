@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Workouts - CholoFitAI</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <style>
+    body {
+      background-color: #f9fafb;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    .container {
+      max-width: 950px;
+      margin: 4rem auto;
+      background: white;
+      padding: 2rem;
+      border-radius: 1rem;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+    }
+    h2, h4 {
+      color: #0f766e;
+    }
+    ul {
+      list-style-type: none;
+      padding-left: 0;
+    }
+    li {
+      background-color: #ecfdf5;
+      margin-bottom: 10px;
+      padding: 10px 15px;
+      border-radius: 8px;
+      transition: transform 0.4s ease, opacity 0.4s ease;
+      opacity: 0;
+      transform: translateY(20px);
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+    li.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .category {
+      margin-bottom: 2.5rem;
+    }
+    .emoji-title {
+      font-size: 1.3rem;
+      margin-bottom: 1rem;
+    }
+    .exercise-img {
+      width: 60px;
+      height: 60px;
+      border-radius: 8px;
+      object-fit: cover;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+      flex-shrink: 0;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h2 class="text-center mb-4">💪 Workouts Library</h2>
+  <p class="text-center text-muted mb-5">Choose exercises based on your environment — Home, Outdoors, or Gym.</p>
+
+  <div class="category">
+    <h4 class="emoji-title">🏠 Home-Based Exercises</h4>
+    <ul>
+      <li><img src="https://i.imgur.com/Oi3jLLI.gif" alt="Push-Ups" class="exercise-img" />Push-Ups</li>
+      <li><img src="https://i.imgur.com/Gl3E4eD.gif" alt="Freehand Squats" class="exercise-img" />Freehand Squats</li>
+      <li><img src="https://i.imgur.com/3j0Ifyx.gif" alt="Sit-Ups" class="exercise-img" />Sit-Ups</li>
+      <li><img src="https://i.imgur.com/SeQeG0g.gif" alt="Wall Sits" class="exercise-img" />Wall Sits</li>
+      <li><img src="https://i.imgur.com/kP5zz6Z.gif" alt="Plank Hold" class="exercise-img" />Plank Hold</li>
+      <li><img src="https://i.imgur.com/6D2XJ2z.gif" alt="Jumping Jacks" class="exercise-img" />Jumping Jacks</li>
+      <li><img src="https://i.imgur.com/RsIv6Mj.gif" alt="High Knees" class="exercise-img" />High Knees</li>
+      <li><img src="https://i.imgur.com/7uovv5k.gif" alt="Glute Bridges" class="exercise-img" />Glute Bridges</li>
+      <li><img src="https://i.imgur.com/6Y0sIgk.gif" alt="Leg Raises" class="exercise-img" />Leg Raises</li>
+      <li><img src="https://i.imgur.com/9j4z4Gz.gif" alt="Arm Circles" class="exercise-img" />Arm Circles</li>
+    </ul>
+  </div>
+
+  <div class="category">
+    <h4 class="emoji-title">🌳 Outdoor Exercises</h4>
+    <ul>
+      <li><img src="https://i.imgur.com/7u9vB47.gif" alt="Jogging" class="exercise-img" />Jogging or Running</li>
+      <li><img src="https://i.imgur.com/bJQ6zG2.gif" alt="Bridge Walks" class="exercise-img" />Bridge Walks or Long Walks</li>
+      <li><img src="https://i.imgur.com/gnRCDlj.gif" alt="Pull-Ups" class="exercise-img" />Pull-Ups (using park bars)</li>
+      <li><img src="https://i.imgur.com/a73oBsp.gif" alt="Bodyweight Squats" class="exercise-img" />Bodyweight Squats</li>
+      <li><img src="https://i.imgur.com/jm9FDqU.gif" alt="Shuffle Runs" class="exercise-img" />Shuffle Runs / Lateral Runs</li>
+      <li><img src="https://i.imgur.com/fjRuXtw.gif" alt="Walking Lunges" class="exercise-img" />Walking Lunges</li>
+      <li><img src="https://i.imgur.com/b4CpkET.gif" alt="Stair Climbing" class="exercise-img" />Stair Climbing</li>
+      <li><img src="https://i.imgur.com/FLcyKkt.gif" alt="Skipping Rope" class="exercise-img" />Skipping Rope</li>
+      <li><img src="https://i.imgur.com/M3PqZCg.gif" alt="Agility Ladder" class="exercise-img" />Agility Ladder Drills</li>
+      <li><img src="https://i.imgur.com/1E9rEbK.gif" alt="Hiking" class="exercise-img" />Hiking</li>
+    </ul>
+  </div>
+
+  <div class="category">
+    <h4 class="emoji-title">🏋️ Gym Exercises</h4>
+    <ul>
+      <li><img src="https://i.imgur.com/29YdlOz.gif" alt="Barbell Squats" class="exercise-img" />Barbell Squats</li>
+      <li><img src="https://i.imgur.com/1ypZ4d8.gif" alt="Bench Press" class="exercise-img" />Bench Press (Flat/Incline)</li>
+      <li><img src="https://i.imgur.com/wuBvOWJ.gif" alt="Deadlifts" class="exercise-img" />Deadlifts</li>
+      <li><img src="https://i.imgur.com/d4aFHEd.gif" alt="Lat Pulldowns" class="exercise-img" />Lat Pulldowns</li>
+      <li><img src="https://i.imgur.com/GCfON2S.gif" alt="Shoulder Press" class="exercise-img" />Shoulder Press (Dumbbells/Barbell)</li>
+      <li><img src="https://i.imgur.com/Y5ZazPX.gif" alt="Dumbbell Bicep Curls" class="exercise-img" />Dumbbell Bicep Curls</li>
+      <li><img src="https://i.imgur.com/FXEEl9J.gif" alt="Tricep Pushdowns" class="exercise-img" />Tricep Pushdowns</li>
+      <li><img src="https://i.imgur.com/xOzJ3C0.gif" alt="Seated Row" class="exercise-img" />Seated Row</li>
+      <li><img src="https://i.imgur.com/kQzA2Lt.gif" alt="Leg Press" class="exercise-img" />Leg Press</li>
+      <li><img src="https://i.imgur.com/8fPN7VX.gif" alt="Cable Flys" class="exercise-img" />Cable Flys</li>
+    </ul>
+  </div>
+</div>
+
+<script>
+  // Animate list items on scroll
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target); // Animate only once
+      }
+    });
+  }, {
+    threshold: 0.1
+  });
+
+  document.querySelectorAll('li').forEach(li => {
+    observer.observe(li);
+  });
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

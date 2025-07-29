@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Bulking Plan - CholoFitAI</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <style>
+    body {
+      background-color: #f9fafb;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    .container {
+      max-width: 900px;
+      margin: 4rem auto;
+      background: white;
+      padding: 2rem;
+      border-radius: 1rem;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+    }
+    .plan-buttons button {
+      margin: 0.5rem;
+    }
+    .plan-guidelines {
+      margin-top: 2rem;
+      opacity: 0;
+      transition: opacity 0.4s ease;
+    }
+    .plan-guidelines.show {
+      opacity: 1;
+    }
+    .plan-guidelines h4 {
+      margin-top: 1.5rem;
+      color: #3b82f6;
+    }
+    .active-btn {
+      background-color: #3b82f6 !important;
+      color: white !important;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h2 class="text-center mb-4">🏋️ Bulking Phase Plan</h2>
+  <p class="text-center text-muted mb-4">Select your plan duration to get tailored guidelines.</p>
+
+  <div class="text-center plan-buttons">
+    <button class="btn btn-outline-primary" onclick="showPlan('3')">3-Month Plan</button>
+    <button class="btn btn-outline-primary" onclick="showPlan('6')">6-Month Plan</button>
+    <button class="btn btn-outline-primary" onclick="showPlan('12')">12-Month Plan</button>
+  </div>
+
+  <div class="plan-guidelines" id="planGuidelines">
+    <p class="text-muted text-center mt-4">Please select a plan above to view details.</p>
+  </div>
+</div>
+
+<script>
+  const plans = {
+    '3': `
+      <h3>3-Month Bulking Plan</h3>
+      <h4>📌 Goal:</h4>
+      <p>Gain lean muscle mass with controlled fat gain.</p>
+
+      <h4>🏋️‍♂️ Workout Plan:</h4>
+      <ul>
+        <li>5–6 strength training days per week (focus on compound lifts)</li>
+        <li>Moderate cardio 2x/week to maintain cardiovascular health</li>
+        <li>Rest days for recovery and muscle growth</li>
+      </ul>
+
+      <h4>🥗 Nutrition Guidelines:</h4>
+      <ul>
+        <li>10–15% calorie surplus from maintenance</li>
+        <li>Protein intake: 1.6–2.2g per kg of bodyweight</li>
+        <li>Higher carbs for energy and recovery</li>
+        <li>Healthy fats and nutrient-dense foods</li>
+      </ul>
+
+      <h4>🧘 Habits & Lifestyle:</h4>
+      <ul>
+        <li>Prioritize sleep 7–9 hours</li>
+        <li>Track weight and strength progress weekly</li>
+        <li>Manage stress and stay consistent</li>
+      </ul>
+    `,
+
+    '6': `
+      <h3>6-Month Bulking Plan</h3>
+      <h4>📌 Goal:</h4>
+      <p>Build muscle steadily with minimal fat accumulation.</p>
+
+      <h4>🏋️‍♂️ Workout Plan:</h4>
+      <ul>
+        <li>5–6 training days focusing on hypertrophy and strength</li>
+        <li>Include accessory work and mobility exercises</li>
+        <li>Light cardio 1–2x/week</li>
+      </ul>
+
+      <h4>🥗 Nutrition Guidelines:</h4>
+      <ul>
+        <li>Moderate calorie surplus 10–12%</li>
+        <li>Balanced macros with focus on protein and carbs</li>
+        <li>Regular meal timing and quality food choices</li>
+        <li>Adjust calories based on progress every 4 weeks</li>
+      </ul>
+
+      <h4>🧘 Habits & Lifestyle:</h4>
+      <ul>
+        <li>Maintain consistent sleep and hydration</li>
+        <li>Use progress photos and journaling</li>
+        <li>Incorporate stress management techniques</li>
+      </ul>
+    `,
+
+    '12': `
+      <h3>12-Month Bulking Plan</h3>
+      <h4>📌 Goal:</h4>
+      <p>Long-term muscle growth with periodic cutting phases.</p>
+
+      <h4>🏋️‍♂️ Workout Plan:</h4>
+      <ul>
+        <li>Periodized training with cycles of hypertrophy and strength</li>
+        <li>Focus on progressive overload and recovery</li>
+        <li>Cardio 1x/week to maintain health</li>
+        <li>Deload weeks every 6–8 weeks</li>
+      </ul>
+
+      <h4>🥗 Nutrition Guidelines:</h4>
+      <ul>
+        <li>Cycle calories with bulking and maintenance phases</li>
+        <li>Macro cycling based on training intensity</li>
+        <li>Focus on whole foods and supplements as needed</li>
+        <li>Regular professional check-ins recommended</li>
+      </ul>
+
+      <h4>🧘 Habits & Lifestyle:</h4>
+      <ul>
+        <li>Prioritize recovery, sleep, and stress management</li>
+        <li>Track metrics like strength, weight, and mood</li>
+        <li>Stay consistent and adapt to lifestyle changes</li>
+      </ul>
+    `
+  };
+
+  function showPlan(months) {
+    const planContainer = document.getElementById('planGuidelines');
+
+    planContainer.classList.remove('show');
+
+    setTimeout(() => {
+      planContainer.innerHTML = plans[months];
+      planContainer.classList.add('show');
+    }, 300);
+
+    document.querySelectorAll('.plan-buttons button').forEach(btn => btn.classList.remove('active-btn'));
+    const index = months === '3' ? 0 : months === '6' ? 1 : 2;
+    document.querySelectorAll('.plan-buttons button')[index].classList.add('active-btn');
+  }
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
