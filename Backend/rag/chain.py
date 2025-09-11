@@ -1,40 +1,49 @@
 # Backend/rag/chain.py
-import os
-from dotenv import load_dotenv
-from langchain_community.vectorstores import Chroma
-from langchain_community.embeddings import SentenceTransformerEmbeddings
-from langchain_openai import ChatOpenAI
+from pathlib import Path
 from langchain.chains import RetrievalQA
 from langchain.prompts import ChatPromptTemplate
-from .retriever import get_retriever
-from .ingest import build_or_load_vs
+from langchain_community.embeddings import SentenceTransformerEmbeddings
+try:
+    from langchain_chroma import Chroma
+except ImportError:
+    from langchain_community.vectorstores import Chroma
 
-load_dotenv()
-OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
+PERSIST_DIR = Path(__file__).resolve().parents[1] / "vectorstore"
 
 SYSTEM = (
     "You are a concise, safe fitness coach. "
-    "Use ONLY retrieved context. No medical, injury, or diet advice. "
-    "Output at most 5 short steps with sets x reps x rest. "
+    "Answer ONLY with the retrieved context. If the context is empty or irrelevant, say "
+    "'I don't have that in my knowledge base.' "
+    "No medical or injury advice. "
+    "Prefer actionable guidance. Min 5 bullet points; use sets x reps x rest when relevant."
 )
 
-def build_chain():
-    # ensure vector store exists or is populated
-    build_or_load_vs(data_dir="../data", persist_dir="../vectorstore")
-    retriever = get_retriever()
+HUMAN = (
+    "User question: {question}\n\n"
+    "Use ONLY this context:\n{context}"
+)
 
+def build_retriever(k: int = 4):
+    embed = SentenceTransformerEmbeddings(model_name="all-MiniLM-L6-v2")
+    vs = Chroma(
+        collection_name="fitness",
+        embedding_function=embed,
+        persist_directory=str(PERSIST_DIR),
+    )
+    return vs.as_retriever(search_kwargs={"k": k})
+
+def build_qa(llm):
+    retriever = build_retriever(k=4)
     prompt = ChatPromptTemplate.from_messages([
         ("system", SYSTEM),
-        ("human", "User question: {question}\nAnswer using retrieved context.")
+        ("human", HUMAN),
     ])
-
-    llm = ChatOpenAI(model="gpt-4o-mini", temperature=0.3, openai_api_key=OPENAI_API_KEY)
-
-    return RetrievalQA.from_chain_type(
+    # pass prompt into the chain so the LLM must use {context}
+    qa = RetrievalQA.from_chain_type(
         llm=llm,
         retriever=retriever,
         chain_type="stuff",
         chain_type_kwargs={"prompt": prompt},
-        return_source_documents=False,
+        return_source_documents=True,  # set True if you want citations
     )
-
+    return qa
