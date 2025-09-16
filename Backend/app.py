@@ -54,14 +54,19 @@ def ingest():
 
 @app.post("/api/chat", response_model=ChatOut)
 def chat(inp: ChatIn):
+    global qa, llm
     if qa is None:
 
         resp = llm.invoke(inp.message)
         return ChatOut(reply=getattr(resp, "content", str(resp)))
     out = qa.invoke({"query":inp.message})
-    result = out.get("result")
-    srcs = out.get("source_documents") or []
+    result = out.get("result") if isinstance(out,dict) else str(out).strip()
+    srcs = (out.get("source_documents") or []) if isinstance(out,dict) else[]
     tail = ""
+    if not result or "I don't have that in my knowledge base" in result:
+        m = llm.invoke(inp.message)
+        result = getattr(m, "content",str(m))
+        return ChatOut(reply=result)
     if srcs:
         # show top 1-2 source snippets for verification
         snips = []
@@ -70,4 +75,16 @@ def chat(inp: ChatIn):
         tail = "\n\n[SOURCES]\n" + "\n".join(f"- {s}: {t}" for s,t in snips)
     return ChatOut(reply=(result or ""))
 
+@app.on_event("startup")
+def startup_event():
+    from Backend.rag.ingest import build_or_update_index
+    from Backend.rag.chain import build_qa
+    global qa
+    try:
+        n = build_or_update_index()
+        qa = build_qa(llm)
+        print(f" RAG index loaded with {n} chunks")
+    except Exception as e:
+        print(f" Failed to build RAG index at startup: {e}")
+        qa = None
 

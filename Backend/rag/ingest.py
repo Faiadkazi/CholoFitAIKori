@@ -20,7 +20,7 @@ def load_docs() -> List:
     return docs
 
 def build_or_update_index():
-    DATA_DIR.mkdir(exist_ok=True)
+    DATA_DIR.mkdir(parents=True,exist_ok=True)
     PERSIST_DIR.mkdir(parents=True,exist_ok=True)
 
     docs = load_docs()
